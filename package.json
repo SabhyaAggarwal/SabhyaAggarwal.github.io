@@ -1,0 +1,36 @@
+{
+  "name": "sabhyaaggarwal-github-io",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with Gemini AI integration",
+  "main": "netlify/functions/gemini-proxy.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build process needed for static site'",
+    "start": "netlify dev",
+    "deploy": "netlify deploy",
+    "deploy:prod": "netlify deploy --prod"
+  },
+  "keywords": [
+    "portfolio",
+    "gemini-ai",
+    "netlify-functions",
+    "serverless",
+    "github-pages"
+  ],
+  "author": "Sabhya Aggarwal",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SabhyaAggarwal/SabhyaAggarwal.github.io.git"
+  },
+  "homepage": "https://sabhya.me"
+}

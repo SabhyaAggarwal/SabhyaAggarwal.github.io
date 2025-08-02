@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini API Demo - Sabhya Aggarwal</title>
+    <!-- Tailwind CSS CDN for consistent styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .loading {
+            display: none;
+        }
+        .loading.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Gemini API Demo</h1>
+            <p class="text-gray-600">Interact with Google's Gemini AI through our secure proxy</p>
+            <a href="../index.html" class="inline-block mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                ← Back to Portfolio
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+            <!-- Prompt Form -->
+            <form id="geminiForm" class="mb-6">
+                <label for="promptInput" class="block text-lg font-semibold text-gray-700 mb-3">
+                    Enter your prompt:
+                </label>
+                <textarea 
+                    id="promptInput" 
+                    name="prompt"
+                    rows="4" 
+                    placeholder="Ask Gemini anything... (e.g., 'Explain quantum computing in simple terms')"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
+                    required
+                ></textarea>
+                
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="mt-4 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                    Send to Gemini
+                </button>
+            </form>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="loading text-center py-4">
+                <div class="inline-flex items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="text-gray-600">Processing your request...</span>
+                </div>
+            </div>
+
+            <!-- Response Display Area -->
+            <div id="responseArea" class="hidden">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Gemini Response:</h3>
+                <div id="responseContent" class="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-[100px] whitespace-pre-wrap"></div>
+            </div>
+
+            <!-- Error Display Area -->
+            <div id="errorArea" class="hidden">
+                <h3 class="text-lg font-semibold text-red-700 mb-3">Error:</h3>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div id="errorContent" class="text-red-700 font-medium mb-2"></div>
+                    <div id="errorDetails" class="hidden">
+                        <div class="mt-3 pt-3 border-t border-red-200">
+                            <div class="text-sm text-red-600">
+                                <div id="errorCode" class="hidden mb-1">
+                                    <span class="font-semibold">Error Code:</span> <span class="font-mono"></span>
+                                </div>
+                                <div id="errorType" class="hidden mb-1">
+                                    <span class="font-semibold">Type:</span> <span class="capitalize"></span>
+                                </div>
+                                <div id="errorSuggestion" class="hidden mt-2 p-2 bg-red-100 rounded border-l-4 border-red-400">
+                                    <span class="font-semibold">Suggestion:</span> <span></span>
+                                </div>
+                            </div>
+                            <button id="toggleErrorDetails" class="mt-2 text-xs text-red-500 hover:text-red-700 underline">
+                                Show technical details
+                            </button>
+                            <div id="technicalDetails" class="hidden mt-2 p-2 bg-gray-100 rounded text-xs text-gray-600 font-mono overflow-x-auto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">About This Demo</h2>
+            <div class="space-y-3 text-gray-600">
+                <p>
+                    This demo showcases a secure integration with Google's Gemini AI API using a Netlify Functions backend.
+                </p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Your prompts are sent securely through our proxy function</li>
+                    <li>API keys are kept secure on the server side</li>
+                    <li>Built with vanilla JavaScript and Tailwind CSS</li>
+                    <li>Deployed using Netlify Functions for serverless backend</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const NETLIFY_FUNCTION_URL = 'https://deploy-preview-3--website-sabhyame.netlify.app/.netlify/functions/gemini-proxy';
+
+        // DOM elements
+        const form = document.getElementById('geminiForm');
+        const promptInput = document.getElementById('promptInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const responseArea = document.getElementById('responseArea');
+        const responseContent = document.getElementById('responseContent');
+        const errorArea = document.getElementById('errorArea');
+        const errorContent = document.getElementById('errorContent');
+        const errorDetails = document.getElementById('errorDetails');
+        const errorCode = document.getElementById('errorCode');
+        const errorType = document.getElementById('errorType');
+        const errorSuggestion = document.getElementById('errorSuggestion');
+        const toggleErrorDetails = document.getElementById('toggleErrorDetails');
+        const technicalDetails = document.getElementById('technicalDetails');
+
+        // Form submission handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                showError('Please enter a prompt');
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+            hideMessages();
+
+            try {
+                const response = await fetch(NETLIFY_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Handle detailed error response
+                    const errorInfo = {
+                        message: data.error || 'Failed to get response from Gemini API',
+                        code: data.errorCode || 'UNKNOWN_ERROR',
+                        type: data.errorType || 'unknown',
+                        suggestion: data.suggestion || 'Please try again later.',
+                        details: data.details || {},
+                        httpStatus: response.status
+                    };
+                    throw new Error(JSON.stringify(errorInfo));
+                }
+
+                showResponse(data.response);
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Try to parse detailed error information
+                let errorInfo = null;
+                try {
+                    errorInfo = JSON.parse(error.message);
+                } catch (parseError) {
+                    // If parsing fails, create a simple error info object
+                    errorInfo = {
+                        message: error.message || 'An unexpected error occurred',
+                        code: 'NETWORK_ERROR',
+                        type: 'network',
+                        suggestion: 'Please check your internet connection and try again.',
+                        details: { originalError: error.message }
+                    };
+                }
+                
+                showError(errorInfo);
+            } finally {
+                setLoadingState(false);
+            }
+        });
+
+        // Helper functions
+        function setLoadingState(isLoading) {
+            submitBtn.disabled = isLoading;
+            loading.classList.toggle('active', isLoading);
+            submitBtn.textContent = isLoading ? 'Processing...' : 'Send to Gemini';
+        }
+
+        function showResponse(response) {
+            responseContent.textContent = response;
+            responseArea.classList.remove('hidden');
+            errorArea.classList.add('hidden');
+        }
+
+        function showError(errorInfo) {
+            // Handle both string and object error formats
+            if (typeof errorInfo === 'string') {
+                errorInfo = {
+                    message: errorInfo,
+                    code: 'UNKNOWN_ERROR',
+                    type: 'unknown',
+                    suggestion: 'Please try again later.',
+                    details: {}
+                };
+            }
+
+            // Display main error message
+            errorContent.textContent = errorInfo.message;
+            
+            // Show error details if available
+            if (errorInfo.code || errorInfo.type || errorInfo.suggestion || Object.keys(errorInfo.details || {}).length > 0) {
+                errorDetails.classList.remove('hidden');
+                
+                // Show error code
+                if (errorInfo.code) {
+                    errorCode.classList.remove('hidden');
+                    errorCode.querySelector('span:last-child').textContent = errorInfo.code;
+                } else {
+                    errorCode.classList.add('hidden');
+                }
+                
+                // Show error type
+                if (errorInfo.type) {
+                    errorType.classList.remove('hidden');
+                    errorType.querySelector('span:last-child').textContent = errorInfo.type;
+                } else {
+                    errorType.classList.add('hidden');
+                }
+                
+                // Show suggestion
+                if (errorInfo.suggestion) {
+                    errorSuggestion.classList.remove('hidden');
+                    errorSuggestion.querySelector('span:last-child').textContent = errorInfo.suggestion;
+                } else {
+                    errorSuggestion.classList.add('hidden');
+                }
+                
+                // Prepare technical details
+                const technicalInfo = {
+                    errorCode: errorInfo.code,
+                    errorType: errorInfo.type,
+                    httpStatus: errorInfo.httpStatus,
+                    timestamp: new Date().toISOString(),
+                    details: errorInfo.details
+                };
+                
+                technicalDetails.textContent = JSON.stringify(technicalInfo, null, 2);
+            } else {
+                errorDetails.classList.add('hidden');
+            }
+            
+            errorArea.classList.remove('hidden');
+            responseArea.classList.add('hidden');
+        }
+
+        function hideMessages() {
+            responseArea.classList.add('hidden');
+            errorArea.classList.add('hidden');
+            errorDetails.classList.add('hidden');
+            technicalDetails.classList.add('hidden');
+        }
+
+        // Toggle technical details visibility
+        toggleErrorDetails.addEventListener('click', () => {
+            const isHidden = technicalDetails.classList.contains('hidden');
+            technicalDetails.classList.toggle('hidden', !isHidden);
+            toggleErrorDetails.textContent = isHidden ? 'Hide technical details' : 'Show technical details';
+        });
+
+        // Add input validation with detailed feedback
+        promptInput.addEventListener('input', (e) => {
+            const value = e.target.value;
+            const length = value.length;
+            
+            // Clear previous validation messages
+            const existingValidation = document.getElementById('promptValidation');
+            if (existingValidation) {
+                existingValidation.remove();
+            }
+            
+            // Show character count and validation
+            if (length > 9000) {
+                const validationDiv = document.createElement('div');
+                validationDiv.id = 'promptValidation';
+                validationDiv.className = `mt-1 text-sm ${length > 10000 ? 'text-red-600' : 'text-amber-600'}`;
+                validationDiv.textContent = `${length}/10,000 characters ${length > 10000 ? '(exceeds limit)' : ''}`;
+                e.target.parentNode.insertBefore(validationDiv, e.target.nextSibling);
+            }
+        });
+
+        // Clear button functionality (optional enhancement)
+        function clearForm() {
+            promptInput.value = '';
+            hideMessages();
+        }
+    </script>
+</body>
+</html>
