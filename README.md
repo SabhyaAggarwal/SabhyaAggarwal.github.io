@@ -190,10 +190,6 @@ The main portfolio is automatically deployed to GitHub Pages from the root direc
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the package.json file for details.
-
 ## 🔗 Links
 
 - **Live Site**: [https://sabhya.me](https://sabhya.me)
