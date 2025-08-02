@@ -28,6 +28,47 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        
+        /* Glowing star animation */
+        .glowing-star {
+            display: inline-block;
+            animation: glow-pulse 2s ease-in-out infinite alternate, float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 16px #f59e0b);
+        }
+        
+        @keyframes glow-pulse {
+            0% {
+                filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 16px #f59e0b);
+                transform: scale(1);
+            }
+            100% {
+                filter: drop-shadow(0 0 12px #fbbf24) drop-shadow(0 0 24px #f59e0b) drop-shadow(0 0 32px #eab308);
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-6px) rotate(1deg);
+            }
+            66% {
+                transform: translateY(-3px) rotate(-1deg);
+            }
+        }
+        
+        .gemini-button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .gemini-button:hover {
+            background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -43,6 +84,24 @@
                 github.com/SabhyaAggarwal
             </a>
         </header>
+
+        <!-- Gemini AI Demo Call-to-Action -->
+        <section class="mb-8 text-center">
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border-2 border-purple-200 shadow-lg">
+                <a href="./frontend/index.html" class="gemini-button inline-flex items-center px-8 py-4 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 group">
+                    <svg class="glowing-star w-6 h-6 mr-3 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L14.09 8.26L20 9L15 14L16.18 20L12 17.27L7.82 20L9 14L4 9L9.91 8.26L12 2Z"/>
+                    </svg>
+                    Ask Gemini anything
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+                <p class="text-gray-600 text-sm mt-3">
+                    Experience the power of Google's Gemini 2.0 Flash AI through our secure integration
+                </p>
+            </div>
+        </section>
 
         <!-- About Me Section -->
         <section class="mb-8 bg-blue-50 p-6 rounded-lg shadow-inner">
