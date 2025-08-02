@@ -141,11 +141,15 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const prompt = promptInput.value.trim();
-            if (!prompt) {
+            const promptUser = promptInput.value.trim();
+            if (!promptUser) {
                 showError('Please enter a prompt');
                 return;
             }
+
+            // Add instruction to NOT use Markdown in output
+            const instruction = "Do not use Markdown formatting or Markdown code blocks in your response. Only output plain text and code as needed.";
+            const prompt = promptUser + "\n\n" + instruction;
 
             // Show loading state
             setLoadingState(true);
