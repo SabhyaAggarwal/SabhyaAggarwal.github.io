@@ -197,6 +197,5 @@ This project is licensed under the MIT License - see the package.json file for d
 ## 🔗 Links
 
 - **Live Site**: [https://sabhya.me](https://sabhya.me)
-- **Demo**: [https://sabhya.me/demo](https://sabhya.me/demo)
 - **GitHub**: [https://github.com/SabhyaAggarwal](https://github.com/SabhyaAggarwal)
 - **Google AI Studio**: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
