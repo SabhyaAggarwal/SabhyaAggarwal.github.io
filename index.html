@@ -33,17 +33,17 @@
         .glowing-star {
             display: inline-block;
             animation: glow-pulse 2s ease-in-out infinite alternate, float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 8px #4285f4) drop-shadow(0 0 16px #34a853);
+            filter: drop-shadow(0 0 6px #4285f4) drop-shadow(0 0 12px #34a853);
         }
         
         @keyframes glow-pulse {
             0% {
-                filter: drop-shadow(0 0 8px #4285f4) drop-shadow(0 0 16px #34a853);
+                filter: drop-shadow(0 0 6px #4285f4) drop-shadow(0 0 12px #34a853);
                 transform: scale(1);
             }
             100% {
-                filter: drop-shadow(0 0 12px #4285f4) drop-shadow(0 0 24px #34a853) drop-shadow(0 0 32px #fbbc04);
-                transform: scale(1.05);
+                filter: drop-shadow(0 0 10px #4285f4) drop-shadow(0 0 18px #34a853) drop-shadow(0 0 24px #fbbc04);
+                transform: scale(1.02);
             }
         }
         
@@ -90,25 +90,11 @@
             <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border-2 border-purple-200 shadow-lg">
                 <a href="./frontend/index.html" class="gemini-button inline-flex items-center px-8 py-4 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 group">
                     <svg class="glowing-star w-6 h-6 mr-3" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" 
-                              fill="url(#geminiGrad1)" stroke="url(#geminiGrad2)" stroke-width="0.5"/>
-                        <path d="M12 7L14 11L18 11.5L15.5 14.5L16 18L12 16L8 18L8.5 14.5L6 11.5L10 11L12 7Z" 
-                              fill="url(#geminiGrad3)" opacity="0.8"/>
-                        <defs>
-                            <linearGradient id="geminiGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#4285f4;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#34a853;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#fbbc04;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="geminiGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ea4335;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#4285f4;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="geminiGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
-                                <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:0.3" />
-                            </linearGradient>
-                        </defs>
+                        <!-- Gemini Logo - Multiple sparkle points -->
+                        <path d="M12 2l1.5 3.5L17 7l-3.5 1.5L12 12l-1.5-3.5L7 7l3.5-1.5L12 2z" fill="#4285f4"/>
+                        <path d="M18 8l1 2.5L22 12l-3 1.5L18 18l-1-2.5L14 14l3-1.5L18 8z" fill="#34a853"/>
+                        <path d="M6 14l1 2.5L10 18l-3 1.5L6 22l-1-2.5L2 18l3-1.5L6 14z" fill="#fbbc04"/>
+                        <path d="M15 2l0.75 1.5L17.5 4.5l-1.75 0.75L15 7.5l-0.75-1.5L12.5 4.5l1.75-0.75L15 2z" fill="#ea4335" opacity="0.8"/>
                     </svg>
                     Ask Gemini anything
                     <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
