@@ -6,6 +6,8 @@
     <title>Gemini API Demo - Sabhya Aggarwal</title>
     <!-- Tailwind CSS CDN for consistent styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -15,6 +17,71 @@
         }
         .loading.active {
             display: block;
+        }
+        /* Markdown styling */
+        #responseContent h1, #responseContent h2, #responseContent h3 {
+            font-weight: bold;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        #responseContent h1 { font-size: 1.75em; }
+        #responseContent h2 { font-size: 1.5em; }
+        #responseContent h3 { font-size: 1.25em; }
+        #responseContent p {
+            margin-bottom: 1em;
+        }
+        #responseContent code {
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875em;
+        }
+        #responseContent pre {
+            background-color: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1em;
+        }
+        #responseContent pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        #responseContent ul, #responseContent ol {
+            margin-left: 1.5em;
+            margin-bottom: 1em;
+        }
+        #responseContent ul {
+            list-style-type: disc;
+        }
+        #responseContent ol {
+            list-style-type: decimal;
+        }
+        #responseContent li {
+            margin-bottom: 0.25em;
+        }
+        #responseContent blockquote {
+            border-left: 4px solid #6366f1;
+            padding-left: 1em;
+            margin-left: 0;
+            margin-bottom: 1em;
+            color: #4b5563;
+        }
+        #responseContent a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        #responseContent a:hover {
+            color: #1d4ed8;
+        }
+        #responseContent strong {
+            font-weight: bold;
+        }
+        #responseContent em {
+            font-style: italic;
         }
     </style>
 </head>
@@ -68,7 +135,7 @@
             <!-- Response Display Area -->
             <div id="responseArea" class="hidden">
                 <h3 class="text-lg font-semibold text-gray-700 mb-3">Gemini Response:</h3>
-                <div id="responseContent" class="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-[100px] whitespace-pre-wrap"></div>
+                <div id="responseContent" class="bg-gray-50 border border-gray-200 rounded-lg p-4 min-h-[100px]"></div>
             </div>
 
             <!-- Error Display Area -->
@@ -141,15 +208,11 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const promptUser = promptInput.value.trim();
-            if (!promptUser) {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
                 showError('Please enter a prompt');
                 return;
             }
-
-            // Add instruction to NOT use Markdown in output
-            const instruction = "Do not use Markdown formatting or Markdown code blocks in your response. Only output plain text and code as needed.";
-            const prompt = promptUser + "\n\n" + instruction;
 
             // Show loading state
             setLoadingState(true);
@@ -212,7 +275,8 @@
         }
 
         function showResponse(response) {
-            responseContent.textContent = response;
+            // Render markdown to HTML
+            responseContent.innerHTML = marked.parse(response);
             responseArea.classList.remove('hidden');
             errorArea.classList.add('hidden');
         }
