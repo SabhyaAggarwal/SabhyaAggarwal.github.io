@@ -1,3 +1,8 @@
+# IndexNow API Request
+# This file contains the HTTP request template for submitting URLs to IndexNow service
+# IndexNow allows you to instantly inform search engines about latest content changes
+# For more information, visit: https://www.indexnow.org/
+
 POST /IndexNow HTTP/1.1
 Content-Type: application/json; charset=utf-8
 Host: api.indexnow.org
