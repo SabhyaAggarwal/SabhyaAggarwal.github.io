@@ -1,0 +1,8 @@
+# robots.txt for sabhya.me
+# Allow all search engines to index everything
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://sabhya.me/sitemap.xml
