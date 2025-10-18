@@ -6,13 +6,3 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://sabhya.me/sitemap.xml
-
-# Specifically allow important bots
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
