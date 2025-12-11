@@ -3,6 +3,7 @@ const axios = require('axios');
 /**
  * Netlify Functions handler for proxying requests to Google's Gemini API
  * This function securely handles API key management and request forwarding
+ * Updated to use gemini-2.5-flash model.
  */
 exports.handler = async (event, context) => {
     // Set CORS headers for browser requests
@@ -121,8 +122,8 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Prepare Gemini API request
-        const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+        // Prepare Gemini API request (using gemini-2.5-flash model)
+        const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
         
         const geminiRequestBody = {
             contents: [{
